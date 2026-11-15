@@ -197,6 +197,48 @@ pub async fn login_finish(
     Ok(credentials)
 }
 
+const OFFLINE_REFRESH_TOKEN: &str = "offline";
+
+/// Vanilla offline-mode UUID: MD5 of `OfflinePlayer:<name>` as a version 3 UUID.
+fn offline_uuid(name: &str) -> Uuid {
+    let mut hash: [u8; 16] =
+        md5::Md5::digest(format!("OfflinePlayer:{name}")).into();
+    hash[6] = (hash[6] & 0x0f) | 0x30;
+    hash[8] = (hash[8] & 0x3f) | 0x80;
+    Uuid::from_bytes(hash)
+}
+
+pub async fn login_offline(
+    name: &str,
+    exec: impl sqlx::Executor<'_, Database = sqlx::Sqlite> + Copy,
+) -> crate::Result<Credentials> {
+    if name.is_empty()
+        || name.len() > 16
+        || !name.chars().all(|c| c.is_ascii_alphanumeric() || c == '_')
+    {
+        return Err(ErrorKind::OtherError(
+            "Offline usernames must be 1 to 16 letters, digits or underscores"
+                .into(),
+        )
+        .as_error());
+    }
+
+    let credentials = Credentials {
+        offline_profile: MinecraftProfile {
+            id: offline_uuid(name),
+            name: name.to_string(),
+            ..MinecraftProfile::default()
+        },
+        access_token: "0".into(),
+        refresh_token: OFFLINE_REFRESH_TOKEN.into(),
+        expires: Utc::now() + Duration::days(36500),
+        active: true,
+    };
+    credentials.upsert(exec).await?;
+
+    Ok(credentials)
+}
+
 #[derive(Deserialize, Debug)]
 pub struct Credentials {
     /// The offline profile of the user these credentials are for.
@@ -265,6 +307,10 @@ impl OnlineProfileCacheIntent {
 }
 
 impl Credentials {
+    pub fn is_offline(&self) -> bool {
+        self.refresh_token == OFFLINE_REFRESH_TOKEN
+    }
+
     /// Refreshes the authentication tokens for this user if they are expired, or
     /// very close to expiration.
     async fn refresh(
@@ -351,6 +397,10 @@ impl Credentials {
         &self,
         cache_intent: OnlineProfileCacheIntent,
     ) -> Option<Arc<MinecraftProfile>> {
+        if self.is_offline() {
+            return None;
+        }
+
         let max_age = cache_intent.max_age();
         let stale_profile = {
             let mut profile_cache = PROFILE_CACHE.lock().await;

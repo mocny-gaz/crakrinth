@@ -9,6 +9,16 @@
 			<SpinnerIcon v-else class="animate-spin" />
 			{{ formatMessage(messages.signInToMinecraft) }}
 		</Button>
+		<div class="flex gap-2">
+			<StyledInput
+				v-model="offlineName"
+				autocomplete="off"
+				:placeholder="formatMessage(messages.offlineUsername)"
+			/>
+			<Button :disabled="!offlineName.trim()" @click="loginOffline()">
+				{{ formatMessage(messages.addOfflineAccount) }}
+			</Button>
+		</div>
 	</div>
 	<Accordion
 		v-else
@@ -80,6 +90,16 @@
 					<PlusIcon />
 					{{ formatMessage(messages.addAccount) }}
 				</Button>
+				<div class="flex gap-2">
+					<StyledInput
+						v-model="offlineName"
+						autocomplete="off"
+						:placeholder="formatMessage(messages.offlineUsername)"
+					/>
+					<Button :disabled="!offlineName.trim()" @click="loginOffline()">
+						{{ formatMessage(messages.addOfflineAccount) }}
+					</Button>
+				</div>
 			</div>
 		</div>
 	</Accordion>
@@ -101,6 +121,7 @@ import {
 	defineMessages,
 	IconButton,
 	injectNotificationManager,
+	StyledInput,
 	useVIntl,
 } from '@modrinth/ui'
 import type { Ref } from 'vue'
@@ -111,6 +132,7 @@ import { trackEvent } from '@/helpers/analytics'
 import {
 	get_default_user,
 	login as login_flow,
+	login_offline,
 	remove_user,
 	set_default_user,
 	users,
@@ -136,6 +158,7 @@ type MinecraftCredential = {
 
 const accounts: Ref<MinecraftCredential[]> = ref([])
 const loginDisabled = ref(false)
+const offlineName = ref('')
 const defaultUser = ref<string | undefined>()
 const equippedSkin = ref<Skin | null>(null)
 const headUrlCache = ref(new Map<string, string>())
@@ -240,6 +263,15 @@ async function login() {
 	loginDisabled.value = false
 }
 
+async function loginOffline() {
+	const added = await login_offline(offlineName.value.trim()).catch(handleError)
+
+	if (added) {
+		offlineName.value = ''
+		await setAccount(added)
+	}
+}
+
 async function logout(id: string) {
 	await remove_user(id).catch(handleError)
 	await refreshValues()
@@ -277,6 +309,14 @@ const messages = defineMessages({
 	minecraftAccount: {
 		id: 'minecraft-account.label',
 		defaultMessage: 'Minecraft account',
+	},
+	offlineUsername: {
+		id: 'minecraft-account.offline-username',
+		defaultMessage: 'Offline username',
+	},
+	addOfflineAccount: {
+		id: 'minecraft-account.add-offline-account',
+		defaultMessage: 'Add offline',
 	},
 	signInToMinecraft: {
 		id: 'minecraft-account.sign-in',

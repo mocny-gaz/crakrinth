@@ -1865,11 +1865,17 @@
   "minecraft-account.add-account": {
     "message": "Add account"
   },
+  "minecraft-account.add-offline-account": {
+    "message": "Add offline"
+  },
   "minecraft-account.label": {
     "message": "Minecraft account"
   },
   "minecraft-account.not-signed-in": {
     "message": "Not signed in"
+  },
+  "minecraft-account.offline-username": {
+    "message": "Offline username"
   },
   "minecraft-account.remove-account": {
     "message": "Remove account"
