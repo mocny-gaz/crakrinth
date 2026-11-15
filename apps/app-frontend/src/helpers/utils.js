@@ -15,6 +15,10 @@ export async function getUpdateSize(updateRid) {
 	return await invoke('get_update_size', { rid: updateRid })
 }
 
+export async function checkAppVersion(version) {
+	return await invoke('check_app_version', { version })
+}
+
 export async function enqueueUpdateForInstallation(updateRid) {
 	return await invoke('enqueue_update_for_installation', { rid: updateRid })
 }

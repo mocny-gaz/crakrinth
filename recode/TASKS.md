@@ -7,7 +7,7 @@ Edit freely. Mark done with [x].
 - [x] P1 Offline accounts (backend, command, UI). app-lib check and frontend typecheck pass; needs an on-device test on Windows
 - [x] P2 Auto update is one toggle, default off, no checks while off (vue-tsc and prettier pass)
 - [x] P3 Updater endpoint and Windows release workflow for the fork (workflow untested until you push a tag)
-- [ ] P4 Version picker plus confirm button, "Check for updates" button
+- [x] P4 Version picker plus confirm button, "Check for updates" button (compiles; needs a real release on the fork to test end to end)
 - [ ] P5 Backup before downgrade, schema downgrade, backup check on upgrade
 - [ ] P6 Import from an existing Modrinth folder (profiles, app.db, settings, accounts)
 - [ ] P7 Skins page and skin calls handle offline accounts

@@ -1028,6 +1028,9 @@
   "app.settings.sidebar.label.instances": {
     "message": "Instances"
   },
+  "app.settings.tabs.app-version": {
+    "message": "App version"
+  },
   "app.settings.tabs.appearance": {
     "message": "Appearance"
   },
@@ -1258,6 +1261,33 @@
   },
   "app.user.project.install-to-instance": {
     "message": "Install to instance"
+  },
+  "app.version-settings.check": {
+    "message": "Check for updates"
+  },
+  "app.version-settings.current": {
+    "message": "{version} (current)"
+  },
+  "app.version-settings.description": {
+    "message": "You are on version {version}. Pick any listed version to downgrade or upgrade. The app restarts to install it."
+  },
+  "app.version-settings.downgrade": {
+    "message": "Downgrade to {version}"
+  },
+  "app.version-settings.installing": {
+    "message": "Installing..."
+  },
+  "app.version-settings.placeholder": {
+    "message": "Select a version"
+  },
+  "app.version-settings.select": {
+    "message": "Install selected version"
+  },
+  "app.version-settings.title": {
+    "message": "App version"
+  },
+  "app.version-settings.upgrade": {
+    "message": "Upgrade to {version}"
   },
   "app.world.server-modal.placeholder-address": {
     "message": "example.modrinth.gg"

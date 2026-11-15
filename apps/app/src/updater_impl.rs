@@ -7,6 +7,7 @@ use tauri_plugin_http::reqwest;
 use tauri_plugin_http::reqwest::ClientBuilder;
 use tauri_plugin_updater::Error;
 use tauri_plugin_updater::Update;
+use tauri_plugin_updater::UpdaterExt;
 use theseus::{
     LoadingBarType, emit_loading, init_loading, launcher_user_agent,
 };
@@ -14,6 +15,56 @@ use tokio::time::Instant;
 
 #[derive(Default)]
 pub struct PendingUpdateData(pub Mutex<Option<(Arc<Update>, Vec<u8>)>>);
+
+#[derive(serde::Serialize)]
+pub struct AppVersionUpdate {
+    pub rid: ResourceId,
+    pub version: String,
+}
+
+fn other_error<T>(message: String) -> Result<T> {
+    let error: theseus::Error = theseus::ErrorKind::OtherError(message).into();
+    Err(error.into())
+}
+
+/// Looks up one specific release of the fork. Any version other than the
+/// current one is accepted, so this covers both downgrades and upgrades.
+#[tauri::command]
+pub async fn check_app_version<R: Runtime>(
+    webview: Webview<R>,
+    version: String,
+) -> Result<AppVersionUpdate> {
+    if version.is_empty()
+        || !version
+            .chars()
+            .all(|c| c.is_ascii_alphanumeric() || matches!(c, '.' | '-' | '+'))
+    {
+        return other_error(format!("Invalid app version: {version}"));
+    }
+
+    let Ok(url) = format!(
+        "https://github.com/mocny-gaz/crakrinth/releases/download/crak-v{version}/latest.json"
+    )
+    .parse::<tauri::Url>() else {
+        return other_error(format!("Invalid app version: {version}"));
+    };
+
+    let Some(update) = webview
+        .updater_builder()
+        .endpoints(vec![url])?
+        .version_comparator(|current, update| update.version != current)
+        .build()?
+        .check()
+        .await?
+    else {
+        return other_error(format!("Version {version} is already installed"));
+    };
+
+    Ok(AppVersionUpdate {
+        version: update.version.clone(),
+        rid: webview.resources_table().add(update),
+    })
+}
 
 // Reimplementation of Update::download mostly, minus the actual download part
 #[tauri::command]

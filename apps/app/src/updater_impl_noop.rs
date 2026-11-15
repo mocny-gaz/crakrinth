@@ -10,6 +10,11 @@ pub fn get_update_size() -> Result<()> {
 }
 
 #[tauri::command]
+pub fn check_app_version() -> Result<()> {
+    updates_are_disabled()
+}
+
+#[tauri::command]
 pub fn enqueue_update_for_installation() -> Result<()> {
     updates_are_disabled()
 }
