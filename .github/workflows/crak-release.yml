@@ -1,0 +1,79 @@
+# Windows release of the fork. Push a tag like crak-v0.17.10 to build and publish it.
+# One-time setup:
+#   1. pnpm --filter=@modrinth/app exec tauri signer generate -w crak.key
+#   2. Repo secret TAURI_PRIVATE_KEY = contents of crak.key, TAURI_KEY_PASSWORD = its password
+#   3. Repo variable UPDATER_PUBKEY = contents of crak.key.pub
+name: Release
+on:
+  push:
+    tags:
+      - 'crak-v*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing tag to build, for example crak-v0.17.10
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    env:
+      TAG: ${{ inputs.tag || github.ref_name }}
+      VITE_STRIPE_PUBLISHABLE_KEY: pk_live_51JbFxJJygY5LJFfKLVVldb10HlLt24p421OWRsTOWc5sXYFOnFUXWieSc6HD3PHo25ktx8db1WcHr36XGFvZFVUz00V9ixrCs5
+      TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
+      TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_KEY_PASSWORD }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.TAG }}
+
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          rustflags: ''
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Prepare
+        shell: bash
+        run: |
+          VER="${TAG#crak-v}"
+          echo "VER=$VER" >> "$GITHUB_ENV"
+          sed -i "0,/^version = .*/s//version = \"$VER\"/" apps/app/Cargo.toml packages/app-lib/Cargo.toml
+          npm pkg set version="$VER" --prefix apps/app-frontend
+          cp packages/app-lib/.env.prod packages/app-lib/.env
+          sed -i "s|SET_BY_RELEASE_WORKFLOW|${{ vars.UPDATER_PUBKEY }}|" apps/app/tauri-release.conf.json
+          corepack enable
+          pnpm install
+
+      - name: Build
+        shell: bash
+        run: pnpm --filter=@modrinth/app run tauri build --config tauri-release.conf.json --bundles nsis,updater
+
+      - name: Publish
+        shell: bash
+        run: |
+          mkdir dist
+          B=target/release/bundle/nsis
+          cp "$(find $B -name '*-setup.exe' | head -1)" "dist/crakrinth_${VER}_x64-setup.exe"
+          cp "$(find $B -name '*.nsis.zip' | head -1)" "dist/crakrinth_${VER}_x64-setup.nsis.zip"
+          cp "$(find $B -name '*.nsis.zip.sig' | head -1)" "dist/crakrinth_${VER}_x64-setup.nsis.zip.sig"
+          jq -n --arg v "$VER" --arg d "$(date -u +%FT%TZ)" \
+            --arg s "$(cat dist/*.sig)" \
+            --arg u "https://github.com/${{ github.repository }}/releases/download/$TAG/crakrinth_${VER}_x64-setup.nsis.zip" \
+            '{version:$v,notes:"",pub_date:$d,platforms:{"windows-x86_64":{signature:$s,url:$u}}}' > dist/latest.json
+          if gh release view "$TAG" > /dev/null 2>&1; then
+            gh release upload "$TAG" dist/* --clobber
+          else
+            gh release create "$TAG" dist/* --title "$TAG" --notes ""
+          fi

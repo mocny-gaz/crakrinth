@@ -1326,6 +1326,12 @@ function showDelayedUpdatePopup() {
 }
 
 async function checkUpdates() {
+	if (!(await getSettings()).auto_download_updates) {
+		console.log('Skipping update check as automatic updates are off')
+		setTimeout(checkUpdates, 5 /* min */ * 60 /* sec */ * 1000 /* ms */)
+		return
+	}
+
 	if (!(await areUpdatesEnabled())) {
 		console.log('Skipping update check as updates are disabled in this build or environment')
 		updatesEnabled.value = false

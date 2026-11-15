@@ -49,6 +49,11 @@ Recode the Modrinth App (modrinth/code) with:
 ## Design notes
 - Offline account = a `minecraft_users` row with refresh_token `offline`, access_token `0`, expires +100 years. UUID = MD5("OfflinePlayer:" + name) as version 3 UUID. `Credentials::is_offline()` skips all Mojang profile calls.
 
+- Auto update: the only gate is `auto_download_updates` (null or false = off). `checkUpdates()` in App.vue reads it, skips all network checks while off and re-reads it every 5 minutes. Toggle lives in BehaviorSettings.vue.
+- Fork releases: repo `mocny-gaz/crakrinth`. Tag `crak-v<version>` (for example crak-v0.17.10) so it never collides with upstream `v*` tags. Each release holds `crakrinth_<ver>_x64-setup.exe`, `.nsis.zip`, `.nsis.zip.sig` and its own `latest.json` (static Tauri updater format). P4 should point the updater at one release's `latest.json` and use a version comparator that allows any different version, which gives downgrade and upgrade with the same code. The picker list comes from `https://api.github.com/repos/mocny-gaz/crakrinth/releases`.
+- Updater pubkey in `apps/app/tauri-release.conf.json` is the placeholder SET_BY_RELEASE_WORKFLOW. The workflow writes the repo variable UPDATER_PUBKEY into it. The Modrinth Windows signCommand is removed. Workflow is untested (no GitHub access from the sandbox).
+- Upstream workflows (theseus-build and others) use Namespace runners and fail on the fork; disable them in the fork's Actions settings.
+
 ## Branches and patches
 - Base: tag v0.17.10, commit 457254f2102005f315ca000f21c8fee0b3b9c722.
 - Working branch: recode/0.17.10. Patches live in `patches-out/0.17.10/`.

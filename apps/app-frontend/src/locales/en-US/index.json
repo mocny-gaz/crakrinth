@@ -227,6 +227,12 @@
   "app.auth-servers.unreachable.header": {
     "message": "Cannot reach authentication servers"
   },
+  "app.behavior-settings.auto-updates.description": {
+    "message": "Check for, download and install app updates automatically. When off, the app never checks for updates."
+  },
+  "app.behavior-settings.auto-updates.title": {
+    "message": "Automatic updates"
+  },
   "app.behavior-settings.confirmations.title": {
     "message": "Confirmations"
   },

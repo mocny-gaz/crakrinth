@@ -5,17 +5,17 @@ Edit freely. Mark done with [x].
 ## Series on v0.17.10
 - [x] P0 Handoff and task list
 - [x] P1 Offline accounts (backend, command, UI). app-lib check and frontend typecheck pass; needs an on-device test on Windows
-- [ ] P2 Auto update is one toggle, default off, no checks while off
-- [ ] P3 Updater points at the fork's GitHub releases (endpoint, pubkey, release list)
+- [x] P2 Auto update is one toggle, default off, no checks while off (vue-tsc and prettier pass)
+- [x] P3 Updater endpoint and Windows release workflow for the fork (workflow untested until you push a tag)
 - [ ] P4 Version picker plus confirm button, "Check for updates" button
 - [ ] P5 Backup before downgrade, schema downgrade, backup check on upgrade
 - [ ] P6 Import from an existing Modrinth folder (profiles, app.db, settings, accounts)
 - [ ] P7 Skins page and skin calls handle offline accounts
 
 ## Needs user input
-- [ ] Fork repo name (owner/repo) for releases and updater endpoint
-- [ ] New minisign updater keypair; private key as GitHub Actions secret
-- [ ] Release workflow for Windows builds on the fork
+- [x] Fork repo: mocny-gaz/crakrinth
+- [ ] Generate the updater keypair; set secrets TAURI_PRIVATE_KEY and TAURI_KEY_PASSWORD and variable UPDATER_PUBKEY (steps at the top of .github/workflows/crak-release.yml)
+- [x] Release workflow for Windows builds on the fork (written, untested)
 
 ## Forward port (rebase the series onto each tag, fix conflicts, one patch set per tag)
 - [ ] v0.18.0 v0.18.1 v0.18.2
