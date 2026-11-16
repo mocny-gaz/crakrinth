@@ -28,6 +28,7 @@ async fn connect_app_db(db_path: &Path) -> crate::Result<Pool<Sqlite>> {
 
 async fn open_migrated_app_db(db_path: &Path) -> crate::Result<Pool<Sqlite>> {
     let pool = open_app_db_pool(db_path).await?;
+    let previous_version = super::db_downgrade::prepare(&pool).await?;
 
     if let Err(err) = stale_data_cleanup(&pool).await {
         tracing::warn!(
@@ -36,6 +37,7 @@ async fn open_migrated_app_db(db_path: &Path) -> crate::Result<Pool<Sqlite>> {
     }
 
     sqlx::migrate!().run(&pool).await?;
+    super::db_downgrade::restore(&pool, previous_version.as_deref()).await;
     record_current_app_version(&pool).await?;
 
     if let Err(err) = stale_data_cleanup(&pool).await {

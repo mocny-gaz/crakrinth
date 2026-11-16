@@ -8,7 +8,7 @@ Edit freely. Mark done with [x].
 - [x] P2 Auto update is one toggle, default off, no checks while off (vue-tsc and prettier pass)
 - [x] P3 Updater endpoint and Windows release workflow for the fork (workflow untested until you push a tag)
 - [x] P4 Version picker plus confirm button, "Check for updates" button (compiles; needs a real release on the fork to test end to end)
-- [ ] P5 Backup before downgrade, schema downgrade, backup check on upgrade
+- [x] P5 Backup before downgrade, schema downgrade, restore on upgrade (unit test passes; needs a real downgrade on your machine)
 - [ ] P6 Import from an existing Modrinth folder (profiles, app.db, settings, accounts)
 - [ ] P7 Skins page and skin calls handle offline accounts
 

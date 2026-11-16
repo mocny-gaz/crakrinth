@@ -215,7 +215,7 @@ async fn next_backup_path(
     unreachable!()
 }
 
-fn sanitize_version_for_filename(version: &str) -> String {
+pub(crate) fn sanitize_version_for_filename(version: &str) -> String {
     let mut sanitized = String::new();
     let mut replaced_last_char = false;
 
