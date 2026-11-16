@@ -101,6 +101,18 @@ fn restart_app(app: tauri::AppHandle) {
 }
 
 #[tauri::command]
+async fn import_modrinth_folder(
+    path: String,
+) -> api::Result<theseus::app_import::ImportSummary> {
+    Ok(
+        theseus::app_import::import_modrinth_folder(std::path::Path::new(
+            &path,
+        ))
+        .await?,
+    )
+}
+
+#[tauri::command]
 async fn set_restart_after_pending_update(
     should_restart: bool,
 ) -> api::Result<()> {
@@ -271,6 +283,7 @@ fn main() {
             enqueue_update_for_installation,
             remove_enqueued_update,
             set_restart_after_pending_update,
+            import_modrinth_folder,
             toggle_decorations,
             show_window,
             restart_app,

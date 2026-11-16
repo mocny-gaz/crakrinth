@@ -107,6 +107,20 @@ async fn reference_pool() -> crate::Result<Pool<Sqlite>> {
 pub(crate) async fn prepare(
     pool: &Pool<Sqlite>,
 ) -> crate::Result<Option<String>> {
+    prepare_inner(pool, true).await
+}
+
+/// Same as `prepare` for a throwaway copy of a database: writes no backup files.
+pub(crate) async fn prepare_copy(
+    pool: &Pool<Sqlite>,
+) -> crate::Result<Option<String>> {
+    prepare_inner(pool, false).await
+}
+
+async fn prepare_inner(
+    pool: &Pool<Sqlite>,
+    save: bool,
+) -> crate::Result<Option<String>> {
     let stored = if has_table(pool, "app_metadata").await? {
         sqlx::query_scalar::<_, String>(
             "SELECT value FROM app_metadata WHERE key = 'app_version'",
@@ -135,7 +149,7 @@ pub(crate) async fn prepare(
             .collect::<Vec<_>>();
 
     if !unknown.is_empty() {
-        downgrade(pool, stored.as_deref().unwrap_or("unknown"), &unknown)
+        downgrade(pool, stored.as_deref().unwrap_or("unknown"), &unknown, save)
             .await?;
     }
 
@@ -146,6 +160,7 @@ async fn downgrade(
     pool: &Pool<Sqlite>,
     from: &str,
     unknown: &[i64],
+    save: bool,
 ) -> crate::Result<()> {
     tracing::warn!(
         "App database was migrated by version {from}, downgrading it to {APP_VERSION}"
@@ -153,11 +168,13 @@ async fn downgrade(
 
     let stem = backup_stem(from, APP_VERSION)?;
     let snapshot = format!("{stem}.db");
-    let _ = std::fs::remove_file(&snapshot);
-    sqlx::query("VACUUM INTO ?")
-        .bind(&snapshot)
-        .execute(pool)
-        .await?;
+    if save {
+        let _ = std::fs::remove_file(&snapshot);
+        sqlx::query("VACUUM INTO ?")
+            .bind(&snapshot)
+            .execute(pool)
+            .await?;
+    }
 
     let reference = reference_pool().await?;
     let wanted = schema(&mut *reference.acquire().await?).await?;
@@ -220,7 +237,12 @@ async fn downgrade(
             .find(|column| !now.get(table).is_some_and(|c| c.contains(*column)))
         {
             return Err(error(format!(
-                "Cannot downgrade the app database to version {APP_VERSION}: {table}.{missing} is missing. Nothing was changed. A backup is at {snapshot}"
+                "Cannot downgrade the app database to version {APP_VERSION}: {table}.{missing} is missing. Nothing was changed.{}",
+                if save {
+                    format!(" A backup is at {snapshot}")
+                } else {
+                    String::new()
+                }
             )));
         }
     }
@@ -233,10 +255,13 @@ async fn downgrade(
     }
     tx.commit().await?;
 
-    std::fs::write(
-        format!("{stem}.json"),
-        serde_json::to_string(&removed).map_err(|e| error(e.to_string()))?,
-    )?;
+    if save {
+        std::fs::write(
+            format!("{stem}.json"),
+            serde_json::to_string(&removed)
+                .map_err(|e| error(e.to_string()))?,
+        )?;
+    }
 
     Ok(())
 }

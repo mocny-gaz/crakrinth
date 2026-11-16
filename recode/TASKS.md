@@ -9,13 +9,20 @@ Edit freely. Mark done with [x].
 - [x] P3 Updater endpoint and Windows release workflow for the fork (workflow untested until you push a tag)
 - [x] P4 Version picker plus confirm button, "Check for updates" button (compiles; needs a real release on the fork to test end to end)
 - [x] P5 Backup before downgrade, schema downgrade, restore on upgrade (unit test passes; needs a real downgrade on your machine)
-- [ ] P6 Import from an existing Modrinth folder (profiles, app.db, settings, accounts)
-- [ ] P7 Skins page and skin calls handle offline accounts
+- [x] P6 Import from an existing Modrinth folder (instances, app.db data, settings, accounts) (unit test passes; needs a real folder on your machine)
+- [x] P7 Offline accounts: safe log redaction token, skin and cape changes blocked with a clear message (re-add offline accounts made with patch 0002)
 
 ## Needs user input
 - [x] Fork repo: mocny-gaz/crakrinth
 - [ ] Generate the updater keypair; set secrets TAURI_PRIVATE_KEY and TAURI_KEY_PASSWORD and variable UPDATER_PUBKEY (steps at the top of .github/workflows/crak-release.yml)
 - [x] Release workflow for Windows builds on the fork (written, untested)
+
+## Windows test checklist (you)
+- [ ] Add an offline account, launch a world offline
+- [ ] Toggle Automatic updates on and off; confirm no update traffic while off
+- [ ] Tag crak-v0.17.10 builds a release; Check for updates lists it
+- [ ] Downgrade and upgrade between two releases; backups appear in %LOCALAPPDATA%\\Modrinth\\Backups\\app-db
+- [ ] Import a stock Modrinth data folder, restart, instances and accounts are there
 
 ## Forward port (rebase the series onto each tag, fix conflicts, one patch set per tag)
 - [ ] v0.18.0 v0.18.1 v0.18.2

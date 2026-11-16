@@ -17,6 +17,17 @@ use crate::{
     util::fetch::INSECURE_REQWEST_CLIENT,
 };
 
+fn ensure_online(credentials: &Credentials) -> crate::Result<()> {
+    if credentials.is_offline() {
+        return Err(ErrorKind::OtherError(
+            "Offline accounts cannot change skins or capes".into(),
+        )
+        .as_error());
+    }
+
+    Ok(())
+}
+
 /// Provides operations for interacting with capes on a Minecraft player profile.
 pub struct MinecraftCapeOperation;
 
@@ -25,6 +36,7 @@ impl MinecraftCapeOperation {
         credentials: &Credentials,
         cape_id: Uuid,
     ) -> crate::Result<()> {
+        ensure_online(credentials)?;
         update_profile_cache_from_response(
             INSECURE_REQWEST_CLIENT
 				.put("https://api.minecraftservices.com/minecraft/profile/capes/active")
@@ -45,6 +57,7 @@ impl MinecraftCapeOperation {
     }
 
     pub async fn unequip_any(credentials: &Credentials) -> crate::Result<()> {
+        ensure_online(credentials)?;
         update_profile_cache_from_response(
 			INSECURE_REQWEST_CLIENT
 				.delete("https://api.minecraftservices.com/minecraft/profile/capes/active")
@@ -75,6 +88,7 @@ impl MinecraftSkinOperation {
         TextureStream::Error: Into<Box<dyn Error + Send + Sync>>,
         Bytes: From<TextureStream::Ok>,
     {
+        ensure_online(credentials)?;
         let form = reqwest::multipart::Form::new()
             .text(
                 "variant",
@@ -115,6 +129,7 @@ impl MinecraftSkinOperation {
     }
 
     pub async fn unequip_any(credentials: &Credentials) -> crate::Result<()> {
+        ensure_online(credentials)?;
         update_profile_cache_from_response(
 			INSECURE_REQWEST_CLIENT
 				.delete("https://api.minecraftservices.com/minecraft/profile/skins/active")

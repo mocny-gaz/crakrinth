@@ -229,7 +229,7 @@ pub async fn login_offline(
             name: name.to_string(),
             ..MinecraftProfile::default()
         },
-        access_token: "0".into(),
+        access_token: "offline-access-token".into(),
         refresh_token: OFFLINE_REFRESH_TOKEN.into(),
         expires: Utc::now() + Duration::days(36500),
         active: true,

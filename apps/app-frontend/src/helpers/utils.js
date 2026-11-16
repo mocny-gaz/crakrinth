@@ -15,6 +15,10 @@ export async function getUpdateSize(updateRid) {
 	return await invoke('get_update_size', { rid: updateRid })
 }
 
+export async function importModrinthFolder(path) {
+	return await invoke('import_modrinth_folder', { path })
+}
+
 export async function checkAppVersion(version) {
 	return await invoke('check_app_version', { version })
 }

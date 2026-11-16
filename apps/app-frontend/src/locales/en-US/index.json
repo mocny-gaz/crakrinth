@@ -326,6 +326,27 @@
   "app.hosting.update-required.title": {
     "message": "Modrinth App update required"
   },
+  "app.import-settings.choose": {
+    "message": "Choose folder"
+  },
+  "app.import-settings.description": {
+    "message": "Copies instances, accounts and settings from another Modrinth App data folder. That folder is not changed. Your current database is backed up first."
+  },
+  "app.import-settings.done": {
+    "message": "Imported {instances, plural, one {# instance} other {# instances}} and {accounts, plural, one {# account} other {# accounts}}. Restart the app to finish."
+  },
+  "app.import-settings.importing": {
+    "message": "Importing..."
+  },
+  "app.import-settings.picker-title": {
+    "message": "Select the Modrinth App data folder"
+  },
+  "app.import-settings.restart": {
+    "message": "Restart app"
+  },
+  "app.import-settings.title": {
+    "message": "Import from Modrinth App"
+  },
   "app.install.phase.downloading_content": {
     "message": "Downloading content"
   },
@@ -1039,6 +1060,9 @@
   },
   "app.settings.tabs.default-instance-options": {
     "message": "Default game options"
+  },
+  "app.settings.tabs.import": {
+    "message": "Import"
   },
   "app.settings.tabs.java-installations": {
     "message": "Java installations"
