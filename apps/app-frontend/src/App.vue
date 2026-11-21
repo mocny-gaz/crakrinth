@@ -1391,11 +1391,11 @@ async function checkUpdates() {
 async function checkLinuxUpdates() {
 	try {
 		const [response, currentVersion] = await Promise.all([
-			fetch('https://launcher-files.modrinth.com/updates.json'),
+			fetch('https://api.github.com/repos/mocny-gaz/crakrinth/releases/latest'),
 			getVersion(),
 		])
 		const updates = await response.json()
-		const latestVersion = updates?.version
+		const latestVersion = updates?.tag_name?.replace(/^crak-v/, '')
 
 		if (latestVersion && latestVersion !== currentVersion) {
 			markAppUpdateActionable(latestVersion)
