@@ -52,25 +52,17 @@
 			"deb": {
 				"depends": []
 			}
-		},
-		"fileAssociations": [
-			{
-				"ext": [
-					"mrpack"
-				],
-				"mimeType": "application/x-modrinth-modpack+zip"
-			}
-		]
+		}
 	},
-	"productName": "Modrinth App",
+	"productName": "Crakrinth",
 	"version": "../app-frontend/package.json",
-	"mainBinaryName": "Modrinth App",
-	"identifier": "ModrinthApp",
+	"mainBinaryName": "Crakrinth",
+	"identifier": "Crakrinth",
 	"plugins": {
 		"deep-link": {
 			"desktop": {
 				"schemes": [
-					"modrinth"
+					"crakrinth"
 				]
 			},
 			"mobile": []
@@ -86,7 +78,7 @@
 				"fullscreen": false,
 				"height": 800,
 				"resizable": true,
-				"title": "Modrinth App",
+				"title": "Crakrinth",
 				"label": "main",
 				"width": 1280,
 				"minHeight": 700,
