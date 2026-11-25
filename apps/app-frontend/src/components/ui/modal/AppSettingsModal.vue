@@ -30,7 +30,7 @@ import { computed, provide, ref, watch } from 'vue'
 import PrivacySettings from '@/components/ui/settings/account/PrivacySettings.vue'
 import ProfileSettings from '@/components/ui/settings/account/ProfileSettings.vue'
 import SocialSettings from '@/components/ui/settings/account/SocialSettings.vue'
-import AppVersionSettings from '@/components/ui/settings/display/AppVersionSettings.vue'
+import UpdateSettings from '@/components/ui/settings/display/UpdateSettings.vue'
 import ImportSettings from '@/components/ui/settings/display/ImportSettings.vue'
 import AppearanceSettings from '@/components/ui/settings/display/AppearanceSettings.vue'
 import BehaviorSettings from '@/components/ui/settings/display/BehaviorSettings.vue'
@@ -95,12 +95,12 @@ const tabs = [
 	},
 	{
 		name: defineMessage({
-			id: 'app.settings.tabs.app-version',
-			defaultMessage: 'App version',
+			id: 'app.settings.tabs.updates',
+			defaultMessage: 'Updates',
 		}),
 		category: tabCategories.display,
 		icon: DownloadIcon,
-		content: AppVersionSettings,
+		content: UpdateSettings,
 	},
 	{
 		name: defineMessage({

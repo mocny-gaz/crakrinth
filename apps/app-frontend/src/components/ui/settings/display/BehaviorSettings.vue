@@ -30,15 +30,6 @@ const messages = defineMessages({
 		id: 'app.behavior-settings.confirmations.title',
 		defaultMessage: 'Confirmations',
 	},
-	autoUpdatesTitle: {
-		id: 'app.behavior-settings.auto-updates.title',
-		defaultMessage: 'Automatic updates',
-	},
-	autoUpdatesDescription: {
-		id: 'app.behavior-settings.auto-updates.description',
-		defaultMessage:
-			'Check for, download and install app updates automatically. When off, the app never checks for updates.',
-	},
 	minimizeLauncherTitle: {
 		id: 'app.appearance-settings.minimize-launcher.title',
 		defaultMessage: 'Minimize app',
@@ -154,20 +145,6 @@ watch(
 				<p class="m-0">
 					{{ formatMessage(messages.defaultLandingPageDescription) }}
 				</p>
-			</div>
-
-			<div class="flex items-center justify-between gap-4">
-				<div>
-					<h3 class="m-0 text-lg font-semibold text-contrast">
-						{{ formatMessage(messages.autoUpdatesTitle) }}
-					</h3>
-					<p class="m-0 mt-1">{{ formatMessage(messages.autoUpdatesDescription) }}</p>
-				</div>
-				<Toggle
-					id="auto-updates"
-					:model-value="!!settings.auto_download_updates"
-					@update:model-value="(e) => (settings.auto_download_updates = !!e)"
-				/>
 			</div>
 
 			<div class="flex items-center justify-between gap-4">

@@ -227,12 +227,6 @@
   "app.auth-servers.unreachable.header": {
     "message": "Cannot reach authentication servers"
   },
-  "app.behavior-settings.auto-updates.description": {
-    "message": "Check for, download and install app updates automatically. When off, the app never checks for updates."
-  },
-  "app.behavior-settings.auto-updates.title": {
-    "message": "Automatic updates"
-  },
   "app.behavior-settings.confirmations.title": {
     "message": "Confirmations"
   },
@@ -1049,9 +1043,6 @@
   "app.settings.sidebar.label.instances": {
     "message": "Instances"
   },
-  "app.settings.tabs.app-version": {
-    "message": "App version"
-  },
   "app.settings.tabs.appearance": {
     "message": "Appearance"
   },
@@ -1075,6 +1066,9 @@
   },
   "app.settings.tabs.resource-management": {
     "message": "Resource management"
+  },
+  "app.settings.tabs.updates": {
+    "message": "Updates"
   },
   "app.sidebar.playing-as": {
     "message": "Playing as"
@@ -1277,6 +1271,39 @@
   "app.update-popup.title": {
     "message": "Update available"
   },
+  "app.update-settings.auto-updates.description": {
+    "message": "Check for, download and install app updates automatically. When off, the app only checks when you press Check for updates."
+  },
+  "app.update-settings.auto-updates.title": {
+    "message": "Automatic updates"
+  },
+  "app.update-settings.check.available": {
+    "message": "Build {version} is available."
+  },
+  "app.update-settings.check.button": {
+    "message": "Check for updates"
+  },
+  "app.update-settings.check.checking": {
+    "message": "Checking..."
+  },
+  "app.update-settings.check.description": {
+    "message": "Looks for newer Crakrinth builds of version {base}. They add new fork features and fixes on top of the same base version."
+  },
+  "app.update-settings.check.install": {
+    "message": "Install {version}"
+  },
+  "app.update-settings.check.installing": {
+    "message": "Installing..."
+  },
+  "app.update-settings.check.no-notes": {
+    "message": "No release notes were published for this build."
+  },
+  "app.update-settings.check.title": {
+    "message": "Fork updates"
+  },
+  "app.update-settings.check.up-to-date": {
+    "message": "You have the latest build of {base} ({version})."
+  },
   "app.update.complete-toast.text": {
     "message": "Click here to view the changelog."
   },
@@ -1285,9 +1312,6 @@
   },
   "app.user.project.install-to-instance": {
     "message": "Install to instance"
-  },
-  "app.version-settings.check": {
-    "message": "Check for updates"
   },
   "app.version-settings.current": {
     "message": "{version} (current)"
@@ -1303,6 +1327,9 @@
   },
   "app.version-settings.placeholder": {
     "message": "Select a version"
+  },
+  "app.version-settings.refresh": {
+    "message": "Refresh list"
   },
   "app.version-settings.select": {
     "message": "Install selected version"

@@ -2,18 +2,14 @@
 import { DownloadIcon } from '@modrinth/assets'
 import { Button, Combobox, defineMessages, injectNotificationManager, useVIntl } from '@modrinth/ui'
 import { getVersion } from '@tauri-apps/api/app'
-import { getCurrentWindow } from '@tauri-apps/api/window'
 import { computed, onMounted, ref } from 'vue'
 
 import {
-	checkAppVersion,
-	enqueueUpdateForInstallation,
-	setRestartAfterPendingUpdate,
-} from '@/helpers/utils.js'
-
-const RELEASES_URL = 'https://api.github.com/repos/mocny-gaz/crakrinth/releases?per_page=100'
-const STORAGE_KEY = 'app_versions'
-const TAG_PREFIX = 'crak-v'
+	compareAppVersions,
+	forkReleases,
+	installForkRelease,
+	refreshForkReleases,
+} from '@/helpers/fork-releases.ts'
 
 const { formatMessage } = useVIntl()
 const { handleError } = injectNotificationManager()
@@ -36,9 +32,9 @@ const messages = defineMessages({
 		id: 'app.version-settings.current',
 		defaultMessage: '{version} (current)',
 	},
-	check: {
-		id: 'app.version-settings.check',
-		defaultMessage: 'Check for updates',
+	refresh: {
+		id: 'app.version-settings.refresh',
+		defaultMessage: 'Refresh list',
 	},
 	upgrade: {
 		id: 'app.version-settings.upgrade',
@@ -60,25 +56,11 @@ const messages = defineMessages({
 
 const current = ref('')
 const selected = ref('')
-const checking = ref(false)
+const refreshing = ref(false)
 const installing = ref(false)
 
-function compare(a: string, b: string) {
-	return a.localeCompare(b, undefined, { numeric: true })
-}
-
-function loadVersions(): string[] {
-	try {
-		return JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '[]')
-	} catch {
-		return []
-	}
-}
-
-const versions = ref<string[]>(loadVersions())
-
 const options = computed(() =>
-	versions.value.map((version) => ({
+	forkReleases.value.map(({ version }) => ({
 		value: version,
 		label: version === current.value ? formatMessage(messages.current, { version }) : version,
 	})),
@@ -89,36 +71,27 @@ const installLabel = computed(() => {
 	if (!selected.value) return formatMessage(messages.select)
 	const version = selected.value
 	return formatMessage(
-		compare(version, current.value) < 0 ? messages.downgrade : messages.upgrade,
+		compareAppVersions(version, current.value) < 0 ? messages.downgrade : messages.upgrade,
 		{ version },
 	)
 })
 
-async function checkForUpdates() {
-	checking.value = true
+async function refresh() {
+	refreshing.value = true
 	try {
-		const response = await fetch(RELEASES_URL)
-		if (!response.ok) throw new Error(`GitHub returned ${response.status}`)
-		const releases: { tag_name: string }[] = await response.json()
-		versions.value = releases
-			.map((release) => release.tag_name)
-			.filter((tag) => tag.startsWith(TAG_PREFIX))
-			.map((tag) => tag.slice(TAG_PREFIX.length))
-			.sort((a, b) => compare(b, a))
-		localStorage.setItem(STORAGE_KEY, JSON.stringify(versions.value))
+		await refreshForkReleases()
 	} catch (error) {
 		handleError(error as Error)
 	}
-	checking.value = false
+	refreshing.value = false
 }
 
 async function install() {
+	const release = forkReleases.value.find(({ version }) => version === selected.value)
+	if (!release) return
 	installing.value = true
 	try {
-		const update = await checkAppVersion(selected.value)
-		await enqueueUpdateForInstallation(update.rid)
-		await setRestartAfterPendingUpdate(true)
-		await getCurrentWindow().close()
+		await installForkRelease(release)
 	} catch (error) {
 		handleError(error as Error)
 		installing.value = false
@@ -145,14 +118,14 @@ onMounted(async () => {
 				<Button
 					type="colored"
 					color="brand"
-					:disabled="!selected || selected === current || installing || checking"
+					:disabled="!selected || selected === current || installing || refreshing"
 					@click="install()"
 				>
 					<DownloadIcon />
 					{{ installLabel }}
 				</Button>
-				<Button type="outlined" :disabled="checking || installing" @click="checkForUpdates()">
-					{{ formatMessage(messages.check) }}
+				<Button type="outlined" :disabled="refreshing || installing" @click="refresh()">
+					{{ formatMessage(messages.refresh) }}
 				</Button>
 			</div>
 		</div>

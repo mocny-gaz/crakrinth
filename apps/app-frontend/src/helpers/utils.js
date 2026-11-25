@@ -19,8 +19,8 @@ export async function importModrinthFolder(path) {
 	return await invoke('import_modrinth_folder', { path })
 }
 
-export async function checkAppVersion(version) {
-	return await invoke('check_app_version', { version })
+export async function checkAppVersion(url) {
+	return await invoke('check_app_version', { url })
 }
 
 export async function enqueueUpdateForInstallation(updateRid) {

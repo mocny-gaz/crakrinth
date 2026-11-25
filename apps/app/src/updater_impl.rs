@@ -27,26 +27,27 @@ fn other_error<T>(message: String) -> Result<T> {
     Err(error.into())
 }
 
-/// Looks up one specific release of the fork. Any version other than the
-/// current one is accepted, so this covers both downgrades and upgrades.
+const RELEASE_URL_PREFIX: &str =
+    "https://github.com/mocny-gaz/crakrinth/releases/download/";
+
+/// Looks up one specific release of the fork through the `latest.json` asset
+/// URL that GitHub lists for it. Any version other than the current one is
+/// accepted, so this covers downgrades, upgrades and newer fork builds of the
+/// current version.
 #[tauri::command]
 pub async fn check_app_version<R: Runtime>(
     webview: Webview<R>,
-    version: String,
+    url: String,
 ) -> Result<AppVersionUpdate> {
-    if version.is_empty()
-        || !version
-            .chars()
-            .all(|c| c.is_ascii_alphanumeric() || matches!(c, '.' | '-' | '+'))
+    if !url.starts_with(RELEASE_URL_PREFIX)
+        || !url.ends_with("/latest.json")
+        || url.contains("..")
     {
-        return other_error(format!("Invalid app version: {version}"));
+        return other_error(format!("Invalid release URL: {url}"));
     }
 
-    let Ok(url) = format!(
-        "https://github.com/mocny-gaz/crakrinth/releases/download/crak-v{version}/latest.json"
-    )
-    .parse::<tauri::Url>() else {
-        return other_error(format!("Invalid app version: {version}"));
+    let Ok(url) = url.parse::<tauri::Url>() else {
+        return other_error("Invalid release URL".to_string());
     };
 
     let Some(update) = webview
@@ -57,7 +58,7 @@ pub async fn check_app_version<R: Runtime>(
         .check()
         .await?
     else {
-        return other_error(format!("Version {version} is already installed"));
+        return other_error("This version is already installed".to_string());
     };
 
     Ok(AppVersionUpdate {
