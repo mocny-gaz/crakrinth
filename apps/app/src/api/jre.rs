@@ -15,6 +15,7 @@ pub fn init<R: tauri::Runtime>() -> TauriPlugin<R> {
             jre_test_jre,
             jre_auto_install_java,
             jre_get_max_memory,
+            jre_modrinth_java_available,
         ])
         .build()
 }
@@ -61,4 +62,9 @@ pub async fn jre_auto_install_java(java_version: u32) -> Result<PathBuf> {
 #[tauri::command]
 pub async fn jre_get_max_memory() -> Result<u64> {
     Ok(jre::get_max_memory().await?)
+}
+
+#[tauri::command]
+pub async fn jre_modrinth_java_available() -> Result<bool> {
+    Ok(jre::modrinth_java_available().await?)
 }

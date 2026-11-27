@@ -103,13 +103,23 @@ fn restart_app(app: tauri::AppHandle) {
 #[tauri::command]
 async fn import_modrinth_folder(
     path: String,
+    selected: Option<Vec<String>>,
 ) -> api::Result<theseus::app_import::ImportSummary> {
-    Ok(
-        theseus::app_import::import_modrinth_folder(std::path::Path::new(
-            &path,
-        ))
-        .await?,
+    Ok(theseus::app_import::import_modrinth_folder(
+        std::path::Path::new(&path),
+        selected,
     )
+    .await?)
+}
+
+#[tauri::command]
+async fn list_modrinth_import_instances(
+    path: String,
+) -> api::Result<Vec<theseus::app_import::ImportableInstance>> {
+    Ok(theseus::app_import::list_modrinth_instances(std::path::Path::new(
+        &path,
+    ))
+    .await?)
 }
 
 #[tauri::command]
@@ -152,7 +162,7 @@ fn main() {
 
     let _log_guard = theseus::start_logger(&tauri_context.config().identifier);
 
-    tracing::info!("Initialized tracing subscriber. Loading Modrinth App!");
+    tracing::info!("Initialized tracing subscriber. Loading Crakrinth!");
 
     let mut builder = tauri::Builder::default();
 
@@ -270,7 +280,6 @@ fn main() {
         .plugin(api::utils::init())
         .plugin(api::cache::init())
         .plugin(api::files::init())
-        .plugin(api::ads::init())
         .plugin(api::friends::init())
         .plugin(api::worlds::init())
         .manage(PendingUpdateData::default())
@@ -284,6 +293,7 @@ fn main() {
             remove_enqueued_update,
             set_restart_after_pending_update,
             import_modrinth_folder,
+            list_modrinth_import_instances,
             toggle_decorations,
             show_window,
             restart_app,
@@ -409,7 +419,7 @@ fn main() {
                     DialogBuilder::message()
                         .set_level(MessageLevel::Error)
                         .set_title("Initialization error")
-                        .set_text("Your Microsoft Edge WebView2 installation is corrupt.\n\nMicrosoft Edge WebView2 is required to run Modrinth App.\n\nLearn how to repair it at https://support.modrinth.com/en/articles/8797765-corrupted-microsoft-edge-webview2-installation")
+                        .set_text("Your Microsoft Edge WebView2 installation is corrupt.\n\nMicrosoft Edge WebView2 is required to run Crakrinth.\n\nLearn how to repair it at https://support.modrinth.com/en/articles/8797765-corrupted-microsoft-edge-webview2-installation")
                         .alert()
                         .show()
                         .unwrap();

@@ -460,7 +460,7 @@
 						},
 					]"
 				>
-					<ModrinthIcon aria-hidden="true" />
+					<CrakrinthIcon aria-hidden="true" />
 					<DropdownIcon aria-hidden="true" class="h-5 w-5 text-secondary" />
 					<template #review-projects>
 						<ScaleIcon aria-hidden="true" /> {{ formatMessage(messages.reviewProjects) }}
@@ -844,7 +844,7 @@ import {
 	LibraryIcon,
 	LogInIcon,
 	LogOutIcon,
-	ModrinthIcon,
+	CrakrinthIcon,
 	MoonIcon,
 	OrganizationIcon,
 	PackageOpenIcon,

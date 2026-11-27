@@ -81,14 +81,16 @@ async fn common_columns(
     .await?)
 }
 
-/// Copies instances, accounts and settings out of another Modrinth App data
-/// folder. Nothing in that folder is changed or moved. The current database
-/// is backed up first and the database part is a single transaction.
-pub(crate) async fn import_folder(
-    pool: &Pool<Sqlite>,
-    instances_dir: &Path,
+#[derive(Serialize, Debug, PartialEq, Eq)]
+pub struct ImportableInstance {
+    pub id: String,
+    pub name: String,
+    pub path: String,
+}
+
+async fn open_source_copy(
     folder: &Path,
-) -> crate::Result<ImportSummary> {
+) -> crate::Result<(tempfile::TempDir, String, Pool<Sqlite>)> {
     let source_db = folder.join("app.db");
     if !source_db.is_file() {
         return Err(error(format!(
@@ -97,8 +99,6 @@ pub(crate) async fn import_folder(
         )));
     }
 
-    // Work on a private copy, brought to this version's schema, so databases
-    // from older and newer versions both import.
     let work = tempfile::tempdir()?;
     let copy_path = work.path().join("source.db");
     let copy_str = copy_path.to_string_lossy().into_owned();
@@ -119,6 +119,49 @@ pub(crate) async fn import_folder(
         .await?;
     super::db_downgrade::prepare_copy(&source).await?;
     sqlx::migrate!().run(&source).await?;
+    Ok((work, copy_str, source))
+}
+
+pub(crate) async fn list_instances(
+    folder: &Path,
+) -> crate::Result<Vec<ImportableInstance>> {
+    let (_work, _copy, source) = open_source_copy(folder).await?;
+    let rows = sqlx::query_as::<_, (String, String, String)>(
+        "SELECT id, name, path FROM instances ORDER BY name COLLATE NOCASE",
+    )
+    .fetch_all(&source)
+    .await?;
+    source.close().await;
+    Ok(rows
+        .into_iter()
+        .map(|(id, name, path)| ImportableInstance { id, name, path })
+        .collect())
+}
+
+/// Copies instances, accounts and settings out of another Modrinth App data
+/// folder. Nothing in that folder is changed or moved. The current database
+/// is backed up first and the database part is a single transaction.
+pub(crate) async fn import_folder(
+    pool: &Pool<Sqlite>,
+    instances_dir: &Path,
+    folder: &Path,
+    selected: Option<&[String]>,
+) -> crate::Result<ImportSummary> {
+    let (_work, copy_str, source) = open_source_copy(folder).await?;
+
+    if let Some(selected) = selected {
+        sqlx::query("PRAGMA foreign_keys = ON").execute(&source).await?;
+        let mut delete = sqlx::QueryBuilder::<Sqlite>::new(
+            "DELETE FROM instances WHERE id NOT IN (",
+        );
+        let mut ids = delete.separated(", ");
+        for id in selected {
+            ids.push_bind(id.clone());
+        }
+        ids.push_unseparated(")");
+        delete.build().execute(&source).await?;
+    }
+
     let custom_dir = sqlx::query_scalar::<_, Option<String>>(
         "SELECT custom_dir FROM settings",
     )
@@ -359,7 +402,7 @@ mod tests {
             .unwrap();
         let instances_dir = dest_dir.join("profiles");
 
-        let summary = import_folder(&dest, &instances_dir, &source_dir)
+        let summary = import_folder(&dest, &instances_dir, &source_dir, None)
             .await
             .unwrap();
         assert_eq!(
@@ -397,7 +440,7 @@ mod tests {
         assert_eq!(theme, "light");
 
         // Running it again adds nothing.
-        let again = import_folder(&dest, &instances_dir, &source_dir)
+        let again = import_folder(&dest, &instances_dir, &source_dir, None)
             .await
             .unwrap();
         assert_eq!(

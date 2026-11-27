@@ -10,6 +10,8 @@
 		"active": true,
 		"category": "Game",
 		"copyright": "",
+		"publisher": "Crakrinth",
+		"homepage": "https://github.com/mocny-gaz/crakrinth",
 		"targets": "all",
 		"externalBin": [],
 		"icon": [
@@ -24,7 +26,7 @@
 				"installerHooks": "./nsis/hooks.nsi"
 			}
 		},
-		"longDescription": "",
+		"longDescription": "Crakrinth is a desktop application for managing your Minecraft mods",
 		"macOS": {
 			"entitlements": "App.entitlements",
 			"exceptionDomain": "",
@@ -47,7 +49,7 @@
 				}
 			}
 		},
-		"shortDescription": "",
+		"shortDescription": "Crakrinth",
 		"linux": {
 			"deb": {
 				"depends": []
@@ -101,7 +103,6 @@
 				"enable": true
 			},
 			"capabilities": [
-				"ads",
 				"core",
 				"plugins"
 			],

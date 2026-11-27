@@ -413,3 +413,46 @@ pub fn default_memory_max_mb() -> u32 {
 pub async fn get_max_memory() -> crate::Result<u64> {
     Ok(system_memory_bytes() / 1024)
 }
+
+async fn modrinth_java_paths() -> crate::Result<Vec<PathBuf>> {
+    let state = State::get().await?;
+    let mut found = Vec::new();
+    for folder in crate::api::app_import::modrinth_data_folders(
+        &state.directories.settings_dir,
+    ) {
+        let Ok(entries) =
+            std::fs::read_dir(folder.join("meta").join("java_versions"))
+        else {
+            continue;
+        };
+        for entry in entries.flatten() {
+            let bin = entry.path().join("bin");
+            match std::fs::read_to_string(&bin) {
+                Ok(relative) => found.push(entry.path().join(relative.trim_end())),
+                Err(_) => found.push(bin.join(jre::JAVA_BIN)),
+            }
+        }
+    }
+    Ok(found)
+}
+
+pub async fn modrinth_java_available() -> crate::Result<bool> {
+    Ok(modrinth_java_paths()
+        .await?
+        .iter()
+        .any(|path| path.is_file()))
+}
+
+pub async fn find_modrinth_java(major: u32) -> Option<JavaVersion> {
+    for path in modrinth_java_paths().await.ok()? {
+        if !path.is_file() {
+            continue;
+        }
+        if let Ok(java) = jre::check_java_at_filepath(&path).await
+            && java.parsed_version == major
+        {
+            return Some(java);
+        }
+    }
+    None
+}

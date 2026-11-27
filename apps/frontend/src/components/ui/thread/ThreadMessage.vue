@@ -28,7 +28,7 @@
 					{{ members[message.author_id].username }}
 				</AutoLink>
 				<ScaleIcon v-if="members[message.author_id].role === 'moderator'" v-tooltip="'Moderator'" />
-				<ModrinthIcon
+				<CrakrinthIcon
 					v-else-if="members[message.author_id].role === 'admin'"
 					v-tooltip="'Modrinth Team'"
 				/>
@@ -156,7 +156,7 @@ import {
 	EyeOffIcon,
 	InfoIcon,
 	MicrophoneIcon,
-	ModrinthIcon,
+	CrakrinthIcon,
 	MoreHorizontalIcon,
 	ScaleIcon,
 	TrashIcon,

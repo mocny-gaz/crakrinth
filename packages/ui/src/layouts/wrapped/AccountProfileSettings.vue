@@ -6,14 +6,6 @@
 		:heading="formatMessage(messages.signInRequiredTitle)"
 		:description="formatMessage(messages.signInRequiredDescription)"
 	>
-		<template #illustration>
-			<div class="relative mb-4 h-[200px]">
-				<img :src="ThinkingRinthbot" alt="" class="h-full w-auto object-contain" />
-				<div
-					class="pointer-events-none absolute inset-x-0 bottom-0 h-14 bg-gradient-to-t from-bg-raised to-transparent"
-				/>
-			</div>
-		</template>
 		<template #actions>
 			<Button type="colored" color="brand" size="xl" native-type="button" @click="requestSignIn">
 				<LogInIcon aria-hidden="true" />
@@ -131,7 +123,7 @@
 </template>
 
 <script setup lang="ts">
-import { LogInIcon, ThinkingRinthbot, TrashIcon, UndoIcon, UploadIcon } from '@modrinth/assets'
+import { LogInIcon, TrashIcon, UndoIcon, UploadIcon } from '@modrinth/assets'
 import { computed, onBeforeUnmount, ref, shallowRef, watch } from 'vue'
 import { RouterLink } from 'vue-router'
 

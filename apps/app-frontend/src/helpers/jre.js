@@ -49,3 +49,7 @@ export async function auto_install_java(javaVersion) {
 export async function get_max_memory() {
 	return await invoke('plugin:jre|jre_get_max_memory')
 }
+
+export async function modrinth_java_available() {
+	return await invoke('plugin:jre|jre_modrinth_java_available')
+}

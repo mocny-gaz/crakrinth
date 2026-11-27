@@ -53,16 +53,6 @@ export namespace Labrinth {
 		}
 	}
 
-	export namespace Campaign {
-		export namespace Internal {
-			export type CampaignInfo = {
-				total_donations_usd: RawDecimal
-				target_usd: RawDecimal
-				num_donators: number
-			}
-		}
-	}
-
 	export namespace Billing {
 		export namespace Internal {
 			export type PriceDuration = 'five-days' | 'monthly' | 'quarterly' | 'yearly'

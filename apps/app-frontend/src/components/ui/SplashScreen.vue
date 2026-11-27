@@ -135,8 +135,7 @@ useAppEvent('loading', (e) => {
 	width: 180vw;
 	height: 180vh;
 	opacity: 0.8;
-	background: #16181c url('@/assets/loading/cube.png') center no-repeat;
-	background-size: contain;
+	background: #16181c;
 
 	z-index: 9996;
 }

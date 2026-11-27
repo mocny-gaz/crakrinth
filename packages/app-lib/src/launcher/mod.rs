@@ -152,8 +152,23 @@ pub async fn get_java_version_from_launch_context(
     let state = State::get().await?;
 
     let java_version = JavaVersion::get(key, &state.pool).await?;
+    if java_version.is_some() {
+        return Ok(java_version);
+    }
 
-    Ok(java_version)
+    let optimised = crate::state::Settings::get(&state.pool)
+        .await?
+        .feature_flags
+        .get(&crate::state::FeatureFlag::OptimisedJava)
+        .copied()
+        .unwrap_or(true);
+    if optimised
+        && let Some(java) = crate::api::jre::find_modrinth_java(key).await
+    {
+        return Ok(Some(java));
+    }
+
+    Ok(None)
 }
 
 pub async fn get_loader_version_from_profile(

@@ -18,6 +18,15 @@ type LandingPage = 'Home' | 'Library'
 const landingPageOptions: LandingPage[] = ['Home', 'Library']
 
 const messages = defineMessages({
+	discordRichPresenceTitle: {
+		id: 'app.behavior-settings.discord-rich-presence.title',
+		defaultMessage: 'Discord Rich Presence',
+	},
+	discordRichPresenceDescription: {
+		id: 'app.behavior-settings.discord-rich-presence.description',
+		defaultMessage:
+			'Show Crakrinth as your current activity on Discord. This does not affect Rich Presence added to instances by mods. Requires an app restart.',
+	},
 	startupAndNavigationTitle: {
 		id: 'app.behavior-settings.startup-and-navigation.title',
 		defaultMessage: 'Startup and navigation',
@@ -36,7 +45,7 @@ const messages = defineMessages({
 	},
 	minimizeLauncherDescription: {
 		id: 'app.appearance-settings.minimize-launcher.description',
-		defaultMessage: 'Minimize Modrinth App when Minecraft starts.',
+		defaultMessage: 'Minimize Crakrinth when Minecraft starts.',
 	},
 	defaultLandingPageTitle: {
 		id: 'app.appearance-settings.default-landing-page.title',
@@ -44,7 +53,7 @@ const messages = defineMessages({
 	},
 	defaultLandingPageDescription: {
 		id: 'app.appearance-settings.default-landing-page.description',
-		defaultMessage: 'Choose the page shown when Modrinth App opens.',
+		defaultMessage: 'Choose the page shown when Crakrinth opens.',
 	},
 	defaultLandingPageHome: {
 		id: 'app.appearance-settings.default-landing-page.home',
@@ -157,6 +166,18 @@ watch(
 					</p>
 				</div>
 				<Toggle id="minimize-launcher" v-model="settings.hide_on_process_start" />
+			</div>
+
+			<div class="flex items-center justify-between gap-4">
+				<div>
+					<h3 class="m-0 text-lg font-semibold text-contrast">
+						{{ formatMessage(messages.discordRichPresenceTitle) }}
+					</h3>
+					<p class="m-0 mt-1">
+						{{ formatMessage(messages.discordRichPresenceDescription) }}
+					</p>
+				</div>
+				<Toggle id="discord-rpc" v-model="settings.discord_rpc" />
 			</div>
 
 			<div class="flex items-center justify-between gap-4">

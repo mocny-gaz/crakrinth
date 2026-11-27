@@ -93,7 +93,6 @@ import {
 import { ButtonLink, Card, IconButton, useFormatDateTime } from '@modrinth/ui'
 import { computed, onMounted, onUnmounted, ref } from 'vue'
 
-import { release_ads_window_hold, take_ads_window_hold } from '@/helpers/ads.js'
 import { trackEvent } from '@/helpers/analytics'
 
 const MC_SERVER_BANNER_NAME = '__mc_server_banner__'
@@ -118,14 +117,9 @@ const filteredGallery = computed(
 const expandedGalleryItem = ref(null)
 const expandedGalleryIndex = ref(0)
 const zoomedIn = ref(false)
-let adsWindowHold = false
 
 const hideImage = () => {
 	expandedGalleryItem.value = null
-	if (adsWindowHold) {
-		adsWindowHold = false
-		release_ads_window_hold()
-	}
 }
 
 const nextImage = () => {
@@ -153,10 +147,6 @@ const previousImage = () => {
 }
 
 const expandImage = (item, index) => {
-	if (!adsWindowHold) {
-		adsWindowHold = true
-		take_ads_window_hold()
-	}
 	expandedGalleryItem.value = item
 	expandedGalleryIndex.value = index
 	zoomedIn.value = false
@@ -188,10 +178,6 @@ onMounted(() => {
 
 onUnmounted(() => {
 	document.removeEventListener('keydown', keyListener)
-	if (adsWindowHold) {
-		adsWindowHold = false
-		release_ads_window_hold()
-	}
 })
 </script>
 

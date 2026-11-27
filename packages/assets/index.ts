@@ -9,9 +9,7 @@
 import './omorphia.scss'
 
 // Branding
-import _ModrinthIcon from './branding/logo.svg?component'
-import _ExcitedRinthbot from './branding/rinthbot/excited.webp'
-import _ThinkingRinthbot from './branding/rinthbot/thinking.webp'
+import _CrakrinthIcon from './branding/logo.svg?component'
 // External Icons
 import _AppleIcon from './external/apple.svg?component'
 import _BlueskyIcon from './external/bluesky.svg?component'
@@ -57,23 +55,8 @@ import _LinuxIcon from './external/linux.svg?component'
 // Tag icon helpers - import maps from generated-icons
 import type { IconComponent } from './generated-icons'
 import { categoryIconMap, loaderIconMap } from './generated-icons'
-import _DoneIllustration from './illustrations/done.svg?component'
-import _EmptyIllustration from './illustrations/empty.svg?component'
-import _EmptyInboxIllustration from './illustrations/empty-inbox.svg?component'
-import _ErrorIllustration from './illustrations/error.svg?component'
-import _NoConnectionIllustration from './illustrations/no-connection.svg?component'
-import _NoCreditCardIllustration from './illustrations/no-credit-card.svg?component'
-import _NoDocumentsIllustration from './illustrations/no-documents.svg?component'
-import _NoGPSIllustration from './illustrations/no-gps.svg?component'
-import _NoImagesIllustration from './illustrations/no-images.svg?component'
-import _NoItemsCartIllustration from './illustrations/no-items-cart.svg?component'
-import _NoMessagesIllustration from './illustrations/no-messages.svg?component'
-import _NoSearchResultIllustration from './illustrations/no-search-result.svg?component'
-import _NoTasksIllustration from './illustrations/no-tasks.svg?component'
 
-export const ModrinthIcon = _ModrinthIcon
-export const ExcitedRinthbot = _ExcitedRinthbot
-export const ThinkingRinthbot = _ThinkingRinthbot
+export const CrakrinthIcon = _CrakrinthIcon
 export const PayPalColorIcon = _PayPalColorIcon
 export const VenmoColorIcon = _VenmoColorIcon
 export const DiscordColorIcon = _DiscordColorIcon
@@ -120,19 +103,6 @@ export * from './generated-icons'
 export { default as ClassicPlayerModel } from './models/classic-player.gltf?url'
 export { default as SlimPlayerModel } from './models/slim-player.gltf?url'
 
-export const DoneIllustration = _DoneIllustration
-export const EmptyIllustration = _EmptyIllustration
-export const EmptyInboxIllustration = _EmptyInboxIllustration
-export const ErrorIllustration = _ErrorIllustration
-export const NoConnectionIllustration = _NoConnectionIllustration
-export const NoCreditCardIllustration = _NoCreditCardIllustration
-export const NoDocumentsIllustration = _NoDocumentsIllustration
-export const NoGPSIllustration = _NoGPSIllustration
-export const NoImagesIllustration = _NoImagesIllustration
-export const NoItemsCartIllustration = _NoItemsCartIllustration
-export const NoMessagesIllustration = _NoMessagesIllustration
-export const NoSearchResultIllustration = _NoSearchResultIllustration
-export const NoTasksIllustration = _NoTasksIllustration
 
 export function getCategoryIcon(categoryName: string): IconComponent | undefined {
 	if (!categoryName) {

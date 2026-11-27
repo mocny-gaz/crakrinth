@@ -9,10 +9,11 @@
 			<SpinnerIcon v-else class="animate-spin" />
 			{{ formatMessage(messages.signInToMinecraft) }}
 		</Button>
-		<div class="flex gap-2">
+		<div class="flex flex-col gap-2">
 			<StyledInput
 				v-model="offlineName"
 				autocomplete="off"
+				wrapper-class="w-full"
 				:placeholder="formatMessage(messages.offlineUsername)"
 			/>
 			<Button :disabled="!offlineName.trim()" @click="loginOffline()">
@@ -90,10 +91,11 @@
 					<PlusIcon />
 					{{ formatMessage(messages.addAccount) }}
 				</Button>
-				<div class="flex gap-2">
+				<div class="flex flex-col gap-2">
 					<StyledInput
 						v-model="offlineName"
 						autocomplete="off"
+						wrapper-class="w-full"
 						:placeholder="formatMessage(messages.offlineUsername)"
 					/>
 					<Button :disabled="!offlineName.trim()" @click="loginOffline()">

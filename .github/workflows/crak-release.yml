@@ -47,7 +47,9 @@ jobs:
       - name: Prepare
         shell: bash
         run: |
-          VER="${TAG#crak-v}"
+          TAGVER="${TAG#crak-v}"
+          VER=$(echo "$TAGVER" | sed -E 's/^([0-9]+\.[0-9]+\.[0-9]+)\.([0-9]+)$/\1+\2/')
+          echo "TAGVER=$TAGVER" >> "$GITHUB_ENV"
           echo "VER=$VER" >> "$GITHUB_ENV"
           sed -i "0,/^version = .*/s//version = \"$VER\"/" apps/app/Cargo.toml packages/app-lib/Cargo.toml
           npm pkg set version="$VER" --prefix apps/app-frontend
@@ -65,12 +67,12 @@ jobs:
         run: |
           mkdir dist
           B=target/release/bundle/nsis
-          cp "$(find $B -name '*-setup.exe' | head -1)" "dist/crakrinth_${VER}_x64-setup.exe"
-          cp "$(find $B -name '*.nsis.zip' | head -1)" "dist/crakrinth_${VER}_x64-setup.nsis.zip"
-          cp "$(find $B -name '*.nsis.zip.sig' | head -1)" "dist/crakrinth_${VER}_x64-setup.nsis.zip.sig"
+          cp "$(find $B -name '*-setup.exe' | head -1)" "dist/crakrinth_${TAGVER}_x64-setup.exe"
+          cp "$(find $B -name '*.nsis.zip' | head -1)" "dist/crakrinth_${TAGVER}_x64-setup.nsis.zip"
+          cp "$(find $B -name '*.nsis.zip.sig' | head -1)" "dist/crakrinth_${TAGVER}_x64-setup.nsis.zip.sig"
           jq -n --arg v "$VER" --arg d "$(date -u +%FT%TZ)" \
             --arg s "$(cat dist/*.sig)" \
-            --arg u "https://github.com/${{ github.repository }}/releases/download/$TAG/crakrinth_${VER}_x64-setup.nsis.zip" \
+            --arg u "https://github.com/${{ github.repository }}/releases/download/$TAG/crakrinth_${TAGVER}_x64-setup.nsis.zip" \
             '{version:$v,notes:"",pub_date:$d,platforms:{"windows-x86_64":{signature:$s,url:$u}}}' > dist/latest.json
           if gh release view "$TAG" > /dev/null 2>&1; then
             gh release upload "$TAG" dist/* --clobber

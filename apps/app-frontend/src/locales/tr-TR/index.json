@@ -150,13 +150,13 @@
     "message": "Gelişmiş işleme"
   },
   "app.appearance-settings.color-theme.description": {
-    "message": "Modrinth App tarafından kullanılacak renk şemasını seçin."
+    "message": "Crakrinth tarafından kullanılacak renk şemasını seçin."
   },
   "app.appearance-settings.color-theme.title": {
     "message": "Renk teması"
   },
   "app.appearance-settings.default-landing-page.description": {
-    "message": "Modrinth App açıldığında gözüken sayfayı seçin."
+    "message": "Crakrinth açıldığında gözüken sayfayı seçin."
   },
   "app.appearance-settings.default-landing-page.home": {
     "message": "Ana Sayfa"
@@ -966,13 +966,13 @@
     "message": "Hayır teşekkürler"
   },
   "app.update-popup.body.download-complete": {
-    "message": "Modrinth App v{version} indirildi. Güncellemek için yeniden başlatın veya Modrinth App’i kapattığınızda otomatik olarak güncellenecektir."
+    "message": "Crakrinth v{version} indirildi. Güncellemek için yeniden başlatın veya Crakrinth’i kapattığınızda otomatik olarak güncellenecektir."
   },
   "app.update-popup.body.linux": {
-    "message": "Modrinth App v{version} yayımlandı. En yeni özellikler ve hata düzeltmeleri için paket yöneticin üzerinden güncelle!"
+    "message": "Crakrinth v{version} yayımlandı. En yeni özellikler ve hata düzeltmeleri için paket yöneticin üzerinden güncelle!"
   },
   "app.update-popup.body.metered": {
-    "message": "Modrinth App v{version} mevcut! Kısıtlı bağlantıda olduğunuzdan otomatik olarak indirmedik."
+    "message": "Crakrinth v{version} mevcut! Kısıtlı bağlantıda olduğunuzdan otomatik olarak indirmedik."
   },
   "app.update-popup.changelog": {
     "message": "Yama Notları"

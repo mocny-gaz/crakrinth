@@ -2,7 +2,6 @@
 import {
 	CheckIcon,
 	EditIcon,
-	ExcitedRinthbot,
 	EyeIcon,
 	LogInIcon,
 	RotateCounterClockwiseIcon,
@@ -14,8 +13,6 @@ import {
 	commonMessages,
 	ConfirmModal,
 	defineMessages,
-	injectAuth,
-	injectModrinthClient,
 	injectNotificationManager,
 	SkinPreviewRenderer,
 	Toggle,
@@ -56,7 +53,6 @@ import {
 	save_custom_skin,
 	set_custom_skin_order,
 } from '@/helpers/skins.ts'
-import { hasPride26Badge } from '@/helpers/user-campaigns.ts'
 import { useRootBreadcrumb } from '@/providers/breadcrumbs'
 import { handleSevereError } from '@/store/error'
 import { useTheming } from '@/store/state'
@@ -76,18 +72,9 @@ type VirtualSkinSectionListExpose = {
 }
 
 const PENDING_SKIN_REFRESH_DELAY_MS = 11_000
-const DEFAULT_SKIN_SECTION_SORT_ORDER = ['Default skins', 'Modrinth Pride']
+const DEFAULT_SKIN_SECTION_SORT_ORDER = ['Default skins']
 const EARS_NOTICE_PLACEHOLDER = '__EARS_MOD_NAME__'
 const messages = defineMessages({
-	modrinthPrideSection: {
-		id: 'app.skins.section.modrinth-pride',
-		defaultMessage: 'Modrinth Pride',
-	},
-	modrinthPrideTooltip: {
-		id: 'app.skins.section.modrinth-pride.tooltip',
-		defaultMessage:
-			'You received these skins for donating to a Modrinth Pride fundraiser during Pride Month.',
-	},
 	modrinthSection: {
 		id: 'app.skins.section.modrinth',
 		defaultMessage: 'Modrinth',
@@ -189,10 +176,6 @@ const messages = defineMessages({
 		id: 'app.skins.toggle-ears-features-on',
 		defaultMessage: 'Toggle on',
 	},
-	excitedRinthbotAlt: {
-		id: 'app.skins.sign-in.rinthbot-alt',
-		defaultMessage: 'Excited Modrinth Bot',
-	},
 	signInTitle: {
 		id: 'app.skins.sign-in.title',
 		defaultMessage: 'Please sign in',
@@ -200,7 +183,7 @@ const messages = defineMessages({
 	signInDescription: {
 		id: 'app.skins.sign-in.description',
 		defaultMessage:
-			'Please sign into your Minecraft account to use the skin management features of the Modrinth app.',
+			'Please sign into your Minecraft account to use the skin management features of Crakrinth.',
 	},
 	signInButton: {
 		id: 'app.skins.sign-in.button',
@@ -215,8 +198,6 @@ const skinSectionList = useTemplateRef<VirtualSkinSectionListExpose>('skinSectio
 const { formatMessage } = useVIntl()
 const notifications = injectNotificationManager()
 const { addNotification, handleError } = notifications
-const auth = injectAuth()
-const client = injectModrinthClient()
 
 const themeStore = useTheming()
 const skins = ref<Skin[]>([])
@@ -273,20 +254,7 @@ const authServerQuery = useQuery({
 	retry: false,
 	refetchOnWindowFocus: false,
 })
-const { data: modrinthUser } = useQuery({
-	queryKey: computed(() => ['authenticated-user', 'campaigns', auth.user.value?.id]),
-	queryFn: () => client.labrinth.users_v3.getAuthenticated(),
-	enabled: () => !!auth.session_token.value,
-	retry: false,
-})
-const hasModrinthPrideCampaign = computed(
-	() => !!auth.session_token.value && hasPride26Badge(modrinthUser.value?.campaigns?.pride_26),
-)
-const defaultSkins = computed(() =>
-	filterDefaultSkins(skins.value).filter(
-		(skin) => skin.section !== 'Modrinth Pride' || hasModrinthPrideCampaign.value,
-	),
-)
+const defaultSkins = computed(() => filterDefaultSkins(skins.value))
 const defaultSkinSections = computed(() => {
 	const sections = new Map<string, Skin[]>()
 
@@ -304,7 +272,6 @@ const defaultSkinSections = computed(() => {
 	return Array.from(sections, ([section, skins]) => ({
 		section,
 		title: getDefaultSkinSectionTitle(section),
-		infoTooltip: getDefaultSkinSectionInfoTooltip(section),
 		skins,
 	})).sort(
 		(a, b) => getDefaultSkinSectionSortIndex(a.section) - getDefaultSkinSectionSortIndex(b.section),
@@ -479,8 +446,6 @@ function isMinecraftSkinRateLimitError(error: unknown) {
 
 function getDefaultSkinSectionTitle(section?: string) {
 	switch (section) {
-		case 'Modrinth Pride':
-			return formatMessage(messages.modrinthPrideSection)
 		case 'Modrinth':
 			return formatMessage(messages.modrinthSection)
 		case 'MINECON Earth 2017':
@@ -505,15 +470,6 @@ function getDefaultSkinSectionTitle(section?: string) {
 			return formatMessage(messages.defaultSkinsSection)
 		default:
 			return section ?? formatMessage(messages.defaultSkinsSection)
-	}
-}
-
-function getDefaultSkinSectionInfoTooltip(section: string) {
-	switch (section) {
-		case 'Modrinth Pride':
-			return formatMessage(messages.modrinthPrideTooltip)
-		default:
-			return undefined
 	}
 }
 
@@ -1262,11 +1218,6 @@ await loadSkins()
 		<div
 			class="relative mx-auto flex w-full max-w-xl flex-col gap-5 rounded-lg bg-bg-raised p-7 shadow-lg"
 		>
-			<img
-				:src="ExcitedRinthbot"
-				:alt="formatMessage(messages.excitedRinthbotAlt)"
-				class="absolute -top-28 right-8 md:right-20 h-28 w-auto"
-			/>
 			<div
 				class="absolute top-0 left-0 w-full h-[1px] opacity-40 bg-gradient-to-r from-transparent via-green-500 to-transparent"
 				style="

@@ -144,13 +144,13 @@
     "message": "Avancerad rendering"
   },
   "app.appearance-settings.color-theme.description": {
-    "message": "Välj färgtemat som används av Modrinth App."
+    "message": "Välj färgtemat som används av Crakrinth."
   },
   "app.appearance-settings.color-theme.title": {
     "message": "Färgtema"
   },
   "app.appearance-settings.default-landing-page.description": {
-    "message": "Välj sidan som visas när Modrinth App öppnas."
+    "message": "Välj sidan som visas när Crakrinth öppnas."
   },
   "app.appearance-settings.default-landing-page.home": {
     "message": "Hem"
@@ -168,7 +168,7 @@
     "message": "Hoppa tillbaka i världar"
   },
   "app.appearance-settings.minimize-launcher.description": {
-    "message": "Minimera Modrinth App när Minecraft startar."
+    "message": "Minimera Crakrinth när Minecraft startar."
   },
   "app.appearance-settings.minimize-launcher.title": {
     "message": "Minimera app"
@@ -783,7 +783,7 @@
     "message": "Startar om..."
   },
   "app.settings.app-version": {
-    "message": "Modrinth App {version}"
+    "message": "Crakrinth {version}"
   },
   "app.settings.default-instance-options.environment-variables.placeholder": {
     "message": "Ange miljövariabler..."
@@ -1062,13 +1062,13 @@
     "message": "Hej där Modrinth-användare!"
   },
   "app.update-popup.body.download-complete": {
-    "message": "Modrinth App v{version} har laddats ner. Ladda om för att uppdatera nu, eller automatiskt när du stänger Modrinth App."
+    "message": "Crakrinth v{version} har laddats ner. Ladda om för att uppdatera nu, eller automatiskt när du stänger Crakrinth."
   },
   "app.update-popup.body.linux": {
-    "message": "Modrinth App v{version} är tillgänglig. Använd din pakethanterare för att uppdatera och få tillgång till de senaste funktionerna och buggfixarna!"
+    "message": "Crakrinth v{version} är tillgänglig. Använd din pakethanterare för att uppdatera och få tillgång till de senaste funktionerna och buggfixarna!"
   },
   "app.update-popup.body.metered": {
-    "message": "Modrinth App v{version} är nu tillgänglig! Eftersom du använder ett nätverk med datatrafikbegränsningar har vi inte laddat ner det automatiskt."
+    "message": "Crakrinth v{version} är nu tillgänglig! Eftersom du använder ett nätverk med datatrafikbegränsningar har vi inte laddat ner det automatiskt."
   },
   "app.update-popup.changelog": {
     "message": "Ändringslogg"
@@ -1224,7 +1224,7 @@
     "message": "Avlänka delad instans"
   },
   "installation-settings.unpublish-shared-instance.modal.admonition-body": {
-    "message": "Detta raderar den delade instansen från Modrinths servrar. De som använder den i Modrinth App kommer sluta få uppdateringar, men din lokala instans och dess innehåll är kvar på den här enheten."
+    "message": "Detta raderar den delade instansen från Modrinths servrar. De som använder den i Crakrinth kommer sluta få uppdateringar, men din lokala instans och dess innehåll är kvar på den här enheten."
   },
   "installation-settings.unpublish-shared-instance.modal.admonition-header": {
     "message": "Avpublicerar delad instans"

@@ -12,7 +12,6 @@ export const DEFAULT_FEATURE_FLAGS = {
 	always_show_app_controls: false,
 	skip_non_essential_warnings: false,
 	skip_unknown_pack_warning: false,
-	pride_fundraiser: true,
 	i18n_debug: false,
 	show_instance_play_time: true,
 	advanced_filters_collapsed: true,
@@ -23,6 +22,7 @@ export const DEFAULT_FEATURE_FLAGS = {
 	friends_offline_collapsed: true,
 	friends_pending_collapsed: true,
 	dismissed_photosensitivity_filter_warning: false,
+	optimised_java: true,
 }
 
 export const THEME_OPTIONS = ['dark', 'light', 'oled', 'retro', 'system'] as const

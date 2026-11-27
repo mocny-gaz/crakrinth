@@ -71,6 +71,7 @@ pub enum FeatureFlag {
     FriendsOfflineCollapsed,
     FriendsPendingCollapsed,
     DismissedPhotosensitivityFilterWarning,
+    OptimisedJava,
 }
 
 impl Settings {

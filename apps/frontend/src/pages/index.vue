@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="landing-hero">
-			<ModrinthIcon class="modrinth-icon text-brand" />
+			<CrakrinthIcon class="modrinth-icon text-brand" />
 			<h1 class="main-header">
 				<IntlFormatted :message-id="messages.thePlaceForMinecraft">
 					<template #~content>
@@ -248,7 +248,7 @@
 									class="graphic gradient-border text-brand"
 									:aria-label="formatMessage(messages.modrinthAppLabel)"
 								>
-									<ModrinthIcon aria-hidden="true" />
+									<CrakrinthIcon aria-hidden="true" />
 								</nuxt-link>
 								<a
 									rel="noopener"
@@ -443,7 +443,7 @@ import {
 	CompassIcon,
 	DashboardIcon,
 	LogInIcon,
-	ModrinthIcon,
+	CrakrinthIcon,
 	SearchIcon,
 } from '@modrinth/assets'
 import {

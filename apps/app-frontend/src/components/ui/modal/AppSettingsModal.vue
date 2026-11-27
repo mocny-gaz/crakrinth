@@ -27,7 +27,9 @@ import { getVersion } from '@tauri-apps/api/app'
 import { platform as getOsPlatform, version as getOsVersion } from '@tauri-apps/plugin-os'
 import { computed, provide, ref, watch } from 'vue'
 
-import PrivacySettings from '@/components/ui/settings/account/PrivacySettings.vue'
+import { modrinthSignInEnabled } from '@/helpers/modrinth-account.ts'
+
+import ModrinthAccountSettings from '@/components/ui/settings/account/ModrinthAccountSettings.vue'
 import ProfileSettings from '@/components/ui/settings/account/ProfileSettings.vue'
 import SocialSettings from '@/components/ui/settings/account/SocialSettings.vue'
 import UpdateSettings from '@/components/ui/settings/display/UpdateSettings.vue'
@@ -133,21 +135,23 @@ const tabs = [
 		category: tabCategories.account,
 		icon: UserIcon,
 		content: ProfileSettings,
+		requiresModrinthAccount: true,
 	},
 	{
 		name: commonSettingsMessages.social,
 		category: tabCategories.account,
 		icon: HeartHandshakeIcon,
 		content: SocialSettings,
+		requiresModrinthAccount: true,
 	},
 	{
 		name: defineMessage({
-			id: 'app.settings.tabs.privacy',
-			defaultMessage: 'Privacy',
+			id: 'app.settings.tabs.modrinth-account',
+			defaultMessage: 'Modrinth account',
 		}),
 		category: tabCategories.account,
 		icon: ShieldIcon,
-		content: PrivacySettings,
+		content: ModrinthAccountSettings,
 	},
 	{
 		name: defineMessage({
@@ -178,7 +182,13 @@ const tabs = [
 	},
 ]
 
-const availableTabs = computed(() => tabs.filter((tab) => !tab.developerOnly || themeStore.devMode))
+const availableTabs = computed(() =>
+	tabs.filter(
+		(tab) =>
+			(!tab.developerOnly || themeStore.devMode) &&
+			(!tab.requiresModrinthAccount || modrinthSignInEnabled.value),
+	),
+)
 
 const modal = ref<InstanceType<typeof TabbedModal> | null>(null)
 const unsavedChangesPopup = ref<{ nudge: () => void } | null>(null)
@@ -272,7 +282,7 @@ const messages = defineMessages({
 	},
 	appVersion: {
 		id: 'app.settings.app-version',
-		defaultMessage: 'Modrinth App {version}',
+		defaultMessage: 'Crakrinth {version}',
 	},
 	macos: {
 		id: 'app.settings.operating-system.macos',

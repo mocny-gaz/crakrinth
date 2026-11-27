@@ -74,6 +74,7 @@ fn main() {
                         "jre_test_jre",
                         "jre_auto_install_java",
                         "jre_get_max_memory",
+                        "jre_modrinth_java_available",
                     ])
                     .default_permission(
                         DefaultPermissionRule::AllowAllCommands,
@@ -309,27 +310,6 @@ fn main() {
                         "show_app_db_backups_folder",
                         "progress_bars_list",
                         "get_opening_command",
-                    ])
-                    .default_permission(
-                        DefaultPermissionRule::AllowAllCommands,
-                    ),
-            )
-            .plugin(
-                "ads",
-                InlinedPlugin::new()
-                    .commands(&[
-                        "init_ads_window",
-                        "hide_ads_window",
-                        "update_ads_window_hold",
-                        "show_ads_consent_ui",
-                        "expand_ads_consent_webview",
-                        "open_ads_consent_preferences",
-                        "finish_ads_consent_flow",
-                        "should_show_ads_consent_popup",
-                        "perform_ads_consent_action",
-                        "record_ads_click",
-                        "open_link",
-                        "get_ads_personalization",
                     ])
                     .default_permission(
                         DefaultPermissionRule::AllowAllCommands,

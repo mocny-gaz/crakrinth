@@ -134,21 +134,6 @@
   "app.action-bar.view-logs": {
     "message": "View logs"
   },
-  "app.ads-consent.accept": {
-    "message": "Accept all"
-  },
-  "app.ads-consent.body": {
-    "message": "Ads make Modrinth possible and fund creator payouts. Our partners may store or access cookies in the app to personalize ads and measure performance."
-  },
-  "app.ads-consent.manage": {
-    "message": "Manage preferences"
-  },
-  "app.ads-consent.reject": {
-    "message": "Reject all"
-  },
-  "app.ads-consent.title": {
-    "message": "Your privacy and how ads support Modrinth"
-  },
   "app.appearance-settings.advanced-rendering.description": {
     "message": "Enable visual effects such as background blur. This may reduce performance without hardware acceleration."
   },
@@ -156,13 +141,13 @@
     "message": "Advanced rendering"
   },
   "app.appearance-settings.color-theme.description": {
-    "message": "Choose the color theme used by Modrinth App."
+    "message": "Choose the color theme used by Crakrinth."
   },
   "app.appearance-settings.color-theme.title": {
     "message": "Color theme"
   },
   "app.appearance-settings.default-landing-page.description": {
-    "message": "Choose the page shown when Modrinth App opens."
+    "message": "Choose the page shown when Crakrinth opens."
   },
   "app.appearance-settings.default-landing-page.home": {
     "message": "Home"
@@ -186,7 +171,7 @@
     "message": "Jump back into worlds"
   },
   "app.appearance-settings.minimize-launcher.description": {
-    "message": "Minimize Modrinth App when Minecraft starts."
+    "message": "Minimize Crakrinth when Minecraft starts."
   },
   "app.appearance-settings.minimize-launcher.title": {
     "message": "Minimize app"
@@ -232,6 +217,12 @@
   },
   "app.behavior-settings.content.title": {
     "message": "Home and content"
+  },
+  "app.behavior-settings.discord-rich-presence.description": {
+    "message": "Show Crakrinth as your current activity on Discord. This does not affect Rich Presence added to instances by mods. Requires an app restart."
+  },
+  "app.behavior-settings.discord-rich-presence.title": {
+    "message": "Discord Rich Presence"
   },
   "app.behavior-settings.startup-and-navigation.title": {
     "message": "Startup and navigation"
@@ -308,20 +299,11 @@
   "app.export-modal.version-number-placeholder": {
     "message": "1.0.0"
   },
-  "app.hosting.update-required.description": {
-    "message": "You need to update to use Modrinth Hosting through the Modrinth App"
-  },
-  "app.hosting.update-required.download": {
-    "message": "Download to update"
-  },
-  "app.hosting.update-required.rinthbot-alt": {
-    "message": "Excited Modrinth Bot"
-  },
-  "app.hosting.update-required.title": {
-    "message": "Modrinth App update required"
-  },
   "app.import-settings.choose": {
     "message": "Choose folder"
+  },
+  "app.import-settings.choose-what": {
+    "message": "Choose what to import"
   },
   "app.import-settings.description": {
     "message": "Copies instances, accounts and settings from another Modrinth App data folder. That folder is not changed. Your current database is backed up first."
@@ -329,8 +311,20 @@
   "app.import-settings.done": {
     "message": "Imported {instances, plural, one {# instance} other {# instances}} and {accounts, plural, one {# account} other {# accounts}}. Restart the app to finish."
   },
+  "app.import-settings.everything": {
+    "message": "Everything will be imported: {count, plural, one {# instance} other {# instances}}, accounts and settings."
+  },
+  "app.import-settings.import-all": {
+    "message": "Import everything"
+  },
+  "app.import-settings.import-selected": {
+    "message": "Import {count, plural, one {# instance} other {# instances}}"
+  },
   "app.import-settings.importing": {
     "message": "Importing..."
+  },
+  "app.import-settings.no-instances": {
+    "message": "This folder has no instances. Accounts and settings can still be imported."
   },
   "app.import-settings.picker-title": {
     "message": "Select the Modrinth App data folder"
@@ -815,6 +809,12 @@
   "app.modal.update-to-play.update-required-description": {
     "message": "An update is required to play {name}. Please update to latest version to launch the game."
   },
+  "app.modrinth-sign-in.off.body": {
+    "message": "Turn it on in Settings, Modrinth account, before you sign in."
+  },
+  "app.modrinth-sign-in.off.title": {
+    "message": "Modrinth account sign in is off"
+  },
   "app.nav.create-new-instance": {
     "message": "Create new instance"
   },
@@ -827,23 +827,11 @@
   "app.nav.modrinth-account": {
     "message": "Modrinth account"
   },
-  "app.nav.modrinth-hosting": {
-    "message": "Modrinth Hosting"
-  },
   "app.nav.sign-in-to-modrinth-account": {
     "message": "Sign in to a Modrinth account"
   },
   "app.nav.signed-in-as": {
     "message": "Signed in as <user>{username}</user>"
-  },
-  "app.nav.upgrade-to-modrinth-plus": {
-    "message": "Upgrade to Modrinth+"
-  },
-  "app.news.title": {
-    "message": "News"
-  },
-  "app.news.view-all": {
-    "message": "View all news"
   },
   "app.project.install-button.already-installed": {
     "message": "This project is already installed"
@@ -879,7 +867,7 @@
     "message": "Restarting..."
   },
   "app.settings.app-version": {
-    "message": "Modrinth App {version}"
+    "message": "Crakrinth {version}"
   },
   "app.settings.default-instance-options.environment-variables.description": {
     "message": "Environment variables set when launching an instance."
@@ -968,23 +956,26 @@
   "app.settings.java-installations.location.title": {
     "message": "Java {version, number} location"
   },
+  "app.settings.java-installations.optimised.description": {
+    "message": "Use the Java that Modrinth App already downloaded, so Crakrinth does not take more disk space. When Modrinth App has no Java for a version, Crakrinth downloads its own. Java you pick below is always used first."
+  },
+  "app.settings.java-installations.optimised.title": {
+    "message": "Optimised Java"
+  },
+  "app.settings.java-installations.optimised.unavailable": {
+    "message": "Not needed, because Modrinth App is not installed here. If it lives in another folder, import from that folder in Settings, Import, and this switch will use its Java."
+  },
+  "app.settings.modrinth-account.description": {
+    "message": "Crakrinth works without a Modrinth account. Turn this on only if you want friends, shared instances or your Modrinth profile."
+  },
+  "app.settings.modrinth-account.title": {
+    "message": "Modrinth account sign in"
+  },
+  "app.settings.modrinth-account.warning": {
+    "message": "Signing in uses your Modrinth account. Your login goes to modrinth.com and a session token is stored on this computer. Crakrinth is a fork that Modrinth does not review, so only turn this on if you trust it. Turning it off signs you out."
+  },
   "app.settings.operating-system.macos": {
     "message": "macOS"
-  },
-  "app.settings.privacy.ads-consent.intro": {
-    "message": "Ads make Modrinth possible and fund creator payouts. Our partners may store or access cookies in the app to personalize ads and measure performance. You can opt out or manage your preferences below."
-  },
-  "app.settings.privacy.discord-rich-presence.description": {
-    "message": "Show Modrinth App as your current activity on Discord. This does not affect Rich Presence added to instances by mods. Requires an app restart."
-  },
-  "app.settings.privacy.discord-rich-presence.title": {
-    "message": "Discord Rich Presence"
-  },
-  "app.settings.privacy.telemetry.description": {
-    "message": "Modrinth collects anonymized analytics and usage data to improve our user experience and customize your experience. By disabling this option, you opt out and your data will no longer be collected."
-  },
-  "app.settings.privacy.telemetry.title": {
-    "message": "Telemetry"
   },
   "app.settings.resource-management.always-show-copy-details.description": {
     "message": "Show the Copy details action while an install is queued or running. It is always available for failed or interrupted installs."
@@ -1020,7 +1011,7 @@
     "message": "Browse for an app directory"
   },
   "app.settings.resource-management.app-directory.description": {
-    "message": "Where Modrinth App stores instances and other files. Changes take effect after restarting the app."
+    "message": "Where Crakrinth stores instances and other files. Changes take effect after restarting the app."
   },
   "app.settings.resource-management.app-directory.select": {
     "message": "Select a new app directory"
@@ -1061,8 +1052,8 @@
   "app.settings.tabs.language": {
     "message": "Language"
   },
-  "app.settings.tabs.privacy": {
-    "message": "Privacy"
+  "app.settings.tabs.modrinth-account": {
+    "message": "Modrinth account"
   },
   "app.settings.tabs.resource-management": {
     "message": "Resource management"
@@ -1187,12 +1178,6 @@
   "app.skins.section.modrinth": {
     "message": "Modrinth"
   },
-  "app.skins.section.modrinth-pride": {
-    "message": "Modrinth Pride"
-  },
-  "app.skins.section.modrinth-pride.tooltip": {
-    "message": "You received these skins for donating to a Modrinth Pride fundraiser during Pride Month."
-  },
   "app.skins.section.mounts-of-mayhem": {
     "message": "Mounts of Mayhem"
   },
@@ -1215,10 +1200,7 @@
     "message": "Sign In"
   },
   "app.skins.sign-in.description": {
-    "message": "Please sign into your Minecraft account to use the skin management features of the Modrinth app."
-  },
-  "app.skins.sign-in.rinthbot-alt": {
-    "message": "Excited Modrinth Bot"
+    "message": "Please sign into your Minecraft account to use the skin management features of Crakrinth."
   },
   "app.skins.sign-in.title": {
     "message": "Please sign in"
@@ -1232,29 +1214,14 @@
   "app.skins.toggle-ears-features-on": {
     "message": "Toggle on"
   },
-  "app.survey.body": {
-    "message": "Would you mind answering a few questions about your experience with Modrinth App?"
-  },
-  "app.survey.footer": {
-    "message": "This feedback will go directly to the Modrinth team and help guide future updates!"
-  },
-  "app.survey.no-thanks": {
-    "message": "No thanks"
-  },
-  "app.survey.take-survey": {
-    "message": "Take survey"
-  },
-  "app.survey.title": {
-    "message": "Hey there Modrinth user!"
-  },
   "app.update-popup.body.download-complete": {
-    "message": "Modrinth App v{version} has finished downloading. Reload to update now, or automatically when you close Modrinth App."
+    "message": "Crakrinth v{version} has finished downloading. Reload to update now, or automatically when you close Crakrinth."
   },
   "app.update-popup.body.linux": {
-    "message": "Modrinth App v{version} is available. Use your package manager to update for the latest features and fixes!"
+    "message": "Crakrinth v{version} is available. Use your package manager to update for the latest features and fixes!"
   },
   "app.update-popup.body.metered": {
-    "message": "Modrinth App v{version} is available now! Since you're on a metered network, we didn't automatically download it."
+    "message": "Crakrinth v{version} is available now! Since you're on a metered network, we didn't automatically download it."
   },
   "app.update-popup.changelog": {
     "message": "Changelog"
@@ -1488,7 +1455,7 @@
     "message": "Unlink shared instance"
   },
   "installation-settings.unpublish-shared-instance.modal.admonition-body": {
-    "message": "This deletes the shared instance from Modrinth's servers. People using it in the Modrinth App will stop receiving updates, but your local instance and its content will stay on this device."
+    "message": "This deletes the shared instance from Modrinth's servers. People using it in Crakrinth will stop receiving updates, but your local instance and its content will stay on this device."
   },
   "installation-settings.unpublish-shared-instance.modal.admonition-header": {
     "message": "Unpublishing shared instance"
